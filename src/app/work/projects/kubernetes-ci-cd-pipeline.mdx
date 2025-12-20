@@ -1,0 +1,105 @@
+---
+title: "Kubernetes CI/CD Pipeline"
+publishedAt: "2024-01-15"
+summary: "Built a comprehensive CI/CD pipeline for microservices deployment on Kubernetes using GitLab CI and ArgoCD."
+images:
+  - "/images/projects/k8s-pipeline/architecture.jpg"
+  - "/images/projects/k8s-pipeline/dashboard.jpg"
+team:
+  - name: "Alex Chen"
+    role: "DevOps Engineer"
+    avatar: "/images/avatar.jpg"
+---
+
+## Overview
+
+Designed and implemented a complete CI/CD pipeline for a microservices architecture running on Kubernetes. The solution automated the entire software delivery lifecycle from code commit to production deployment, reducing deployment time from hours to minutes while maintaining high reliability and security standards.
+
+## Architecture
+
+The pipeline consists of several key components:
+
+### GitLab CI Pipeline
+- **Build Stage**: Automated Docker image building with multi-stage builds for optimization
+- **Test Stage**: Unit tests, integration tests, and security scanning with Trivy
+- **Security Stage**: SAST/DAST scanning and dependency vulnerability checks
+- **Package Stage**: Helm chart packaging and versioning
+
+### ArgoCD Deployment
+- **GitOps Workflow**: Declarative configuration management
+- **Multi-Environment**: Automated promotion from dev → staging → production
+- **Rollback Capability**: One-click rollbacks with full audit trail
+- **Health Monitoring**: Real-time application health checks
+
+## Key Features
+
+### Infrastructure as Code
+```yaml
+# Terraform configuration for EKS cluster
+resource "aws_eks_cluster" "main" {
+  name     = var.cluster_name
+  role_arn = aws_iam_role.cluster.arn
+  version  = "1.28"
+
+  vpc_config {
+    subnet_ids = var.subnet_ids
+    endpoint_config {
+      private_access = true
+      public_access  = true
+    }
+  }
+}
+```
+
+### Automated Testing
+- Unit test coverage > 80%
+- Integration tests for all API endpoints
+- Performance testing with k6
+- Security scanning with Snyk and Trivy
+
+### Monitoring & Observability
+- Prometheus metrics collection
+- Grafana dashboards for visualization
+- ELK stack for centralized logging
+- Jaeger for distributed tracing
+
+## Results
+
+### Performance Improvements
+- **Deployment Time**: Reduced from 2 hours to 8 minutes
+- **Rollback Time**: From 30 minutes to 2 minutes
+- **Build Success Rate**: Improved to 98.5%
+- **Mean Time to Recovery**: Reduced by 70%
+
+### Operational Benefits
+- Zero-downtime deployments
+- Automated security compliance checks
+- Complete deployment audit trail
+- Self-healing infrastructure
+
+## Technologies Used
+
+- **Container Orchestration**: Kubernetes (EKS)
+- **CI/CD**: GitLab CI, ArgoCD
+- **Infrastructure**: Terraform, Helm
+- **Monitoring**: Prometheus, Grafana, ELK
+- **Security**: Trivy, Snyk, OPA Gatekeeper
+- **Cloud**: AWS (EKS, ECR, ALB, Route53)
+
+## Challenges & Solutions
+
+### Challenge: Managing Secrets
+**Solution**: Implemented External Secrets Operator with AWS Secrets Manager integration, ensuring secrets are never stored in Git repositories.
+
+### Challenge: Multi-Environment Consistency
+**Solution**: Created environment-specific Helm values with GitOps promotion workflows, ensuring consistent deployments across all environments.
+
+### Challenge: Resource Optimization
+**Solution**: Implemented Vertical Pod Autoscaler (VPA) and Horizontal Pod Autoscaler (HPA) with custom metrics, reducing infrastructure costs by 35%.
+
+## Future Enhancements
+
+- Integration with service mesh (Istio) for advanced traffic management
+- Implementation of chaos engineering practices with Chaos Monkey
+- Advanced deployment strategies (canary, blue-green) with Flagger
+- Cost optimization with Spot instances and cluster autoscaling

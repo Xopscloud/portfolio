@@ -1,0 +1,290 @@
+---
+title: "Construction Management Platform"
+publishedAt: "2025-12-20"
+summary: "React + Java stack application, fully containerized and deployed using GitHub Actions with Kubernetes orchestration."
+images:
+  - "/images/projects/Construction Management Platform.png"
+technologies:
+  - "React"
+  - "Java"
+  - "Docker"
+  - "Kubernetes"
+  - "GitHub Actions"
+  - "Helm"
+team:
+  - name: "Johnson Thomas"
+    role: "DevOps Engineer"
+    avatar: "/images/avatar.jpg"
+---
+
+## Project Overview
+
+React + Java stack application, fully containerized with Docker and deployed using GitHub Actions with Kubernetes orchestration.
+
+## Technologies
+
+- React
+- Java
+- Docker
+- Kubernetes
+- GitHub Actions
+- Helm
+
+## Highlights
+
+- Containerized CI/CD with GitHub Actions
+- Kubernetes orchestration and Helm charts
+- Scalable microservices-based architecture
+---
+title: "Construction Management Platform"
+publishedAt: "2024-04-12"
+summary: "React + Java stack application, fully containerized with Docker and deployed using GitHub Actions with Kubernetes orchestration."
+images:
+  - "/images/projects/construction/platform-dashboard.jpg"
+team:
+  - name: "Johnson Thomas"
+    role: "DevOps Engineer"
+    avatar: "/images/avatar.jpg"
+---
+
+## Project Overview
+
+Developed a comprehensive construction management platform using React frontend and Java Spring Boot backend, fully containerized with Docker and deployed using GitHub Actions with Kubernetes orchestration for scalable project management.
+
+## Application Architecture
+
+### Frontend (React)
+- **Framework**: React 18 with TypeScript
+- **State Management**: Redux Toolkit
+- **UI Components**: Material-UI with custom themes
+- **Features**: Project tracking, resource management, real-time updates
+
+### Backend (Java Spring Boot)
+- **Framework**: Spring Boot 3.0 with Java 17
+- **Architecture**: Microservices with Spring Cloud
+- **Database**: PostgreSQL with JPA/Hibernate
+- **Security**: Spring Security with JWT authentication
+
+### Microservices Design
+- **Project Service**: Project lifecycle management
+- **Resource Service**: Equipment and material tracking
+- **User Service**: Authentication and authorization
+- **Notification Service**: Real-time alerts and updates
+
+## Containerization Strategy
+
+### Frontend Dockerfile
+```dockerfile
+# Multi-stage build for React app
+FROM node:18-alpine as build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY . .
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=build /app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+### Backend Dockerfile
+```dockerfile
+FROM openjdk:17-jdk-slim
+VOLUME /tmp
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+```
+
+## CI/CD with GitHub Actions
+
+### Workflow Configuration
+```yaml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Run tests
+      run: ./mvnw test
+    
+    - name: Build with Maven
+      run: ./mvnw clean package
+    
+    - name: Build Docker image
+      run: docker build -t construction-app:${{ github.sha }} .
+```
+
+### Deployment Pipeline
+```yaml
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deploy to Kubernetes
+      uses: azure/k8s-deploy@v1
+      with:
+        manifests: |
+          k8s/deployment.yaml
+          k8s/service.yaml
+        images: |
+          construction-app:${{ github.sha }}
+```
+
+## Kubernetes Orchestration
+
+### Deployment Configuration
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: construction-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: construction-app
+  template:
+    metadata:
+      labels:
+        app: construction-app
+    spec:
+      containers:
+      - name: backend
+        image: construction-backend:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "production"
+      - name: frontend
+        image: construction-frontend:latest
+        ports:
+        - containerPort: 80
+```
+
+### Helm Chart Structure
+```yaml
+# values.yaml
+replicaCount: 3
+
+image:
+  repository: construction-app
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: construction.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+```
+
+## Infrastructure Management
+
+### Database Setup
+- **PostgreSQL**: Primary database for application data
+- **Redis**: Caching and session management
+- **MinIO**: Object storage for documents and images
+- **Backup Strategy**: Automated daily backups with retention policies
+
+### Monitoring & Observability
+- **Prometheus**: Metrics collection from Spring Boot actuator
+- **Grafana**: Custom dashboards for application metrics
+- **ELK Stack**: Centralized logging and analysis
+- **Jaeger**: Distributed tracing for microservices
+
+## Security Implementation
+
+### Application Security
+- **Authentication**: JWT-based authentication
+- **Authorization**: Role-based access control (RBAC)
+- **API Security**: Rate limiting and input validation
+- **Data Encryption**: TLS encryption for data in transit
+
+### Infrastructure Security
+- **Network Policies**: Kubernetes network segmentation
+- **Secrets Management**: Kubernetes secrets and external secrets operator
+- **Image Scanning**: Trivy for container vulnerability scanning
+- **RBAC**: Kubernetes role-based access control
+
+## Key Features
+
+### Project Management
+- **Project Tracking**: Timeline and milestone management
+- **Resource Allocation**: Equipment and personnel assignment
+- **Document Management**: File upload and version control
+- **Reporting**: Custom reports and analytics
+
+### Real-time Capabilities
+- **WebSocket Integration**: Live updates and notifications
+- **Progress Tracking**: Real-time project status updates
+- **Collaboration Tools**: Team communication features
+- **Mobile Responsive**: Cross-platform accessibility
+
+## Performance Optimization
+
+### Frontend Optimization
+- **Code Splitting**: Lazy loading of components
+- **Bundle Optimization**: Webpack optimization
+- **CDN Integration**: Static asset delivery
+- **Caching Strategy**: Browser and service worker caching
+
+### Backend Optimization
+- **Connection Pooling**: Database connection optimization
+- **Caching**: Redis-based application caching
+- **Async Processing**: Background job processing
+- **Load Balancing**: Multiple instance deployment
+
+## Results & Impact
+
+### Performance Metrics
+- **Load Time**: Sub-3 second initial page load
+- **API Response**: Average 150ms response time
+- **Concurrent Users**: Support for 1000+ simultaneous users
+- **Uptime**: 99.95% availability achieved
+
+### Business Benefits
+- **Deployment Frequency**: Daily deployments with zero downtime
+- **Development Velocity**: 50% faster feature delivery
+- **Cost Reduction**: 40% infrastructure cost savings
+- **User Satisfaction**: 95% user adoption rate
+
+## Technologies Used
+
+- **Frontend**: React, TypeScript, Redux, Material-UI
+- **Backend**: Java, Spring Boot, Spring Cloud, PostgreSQL
+- **Containerization**: Docker, Kubernetes, Helm
+- **CI/CD**: GitHub Actions, Maven, npm
+- **Monitoring**: Prometheus, Grafana, ELK Stack
+- **Security**: Spring Security, JWT, TLS

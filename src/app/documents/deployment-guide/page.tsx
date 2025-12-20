@@ -1,0 +1,415 @@
+import { Flex, Heading, Text, Button } from '@once-ui-system/core';
+
+export default function DeploymentGuidePage() {
+    return (
+        <Flex
+            fillWidth maxWidth="m"
+            direction="column"
+            flex={1}
+            style={{ alignItems: 'center' }}>
+            <Flex
+                fillWidth
+                direction="column"
+                paddingY="l" gap="l">
+                
+                <Flex
+                    direction="column"
+                    fillWidth
+                    gap="m">
+                    <Flex
+                        gap="m"
+                        style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <Flex
+                            direction="column"
+                            gap="s"
+                            flex={1}>
+                            <Heading
+                                variant="display-strong-s">
+                                Deployment Guide: Next.js Frontend, Node.js Backend & MongoDB
+                            </Heading>
+                            <Text
+                                variant="body-default-l"
+                                onBackground="neutral-weak">
+                                Complete step-by-step guide to deploy Next.js frontend, Node.js backend, and MongoDB database with local and Atlas setup options.
+                            </Text>
+                        </Flex>
+                        
+                        <Flex
+                            gap="s">
+                            <Button
+                                href="/documents"
+                                variant="tertiary"
+                                size="m">
+                                ← Back
+                            </Button>
+                            <Button
+                                href="/api/download/nextjs-nodejs-mongodb-deployment"
+                                variant="secondary"
+                                size="m">
+                                Download
+                            </Button>
+                        </Flex>
+                    </Flex>
+                </Flex>
+
+                <Flex
+                    direction="column"
+                    fillWidth
+                    gap="m"
+                    style={{ 
+                        lineHeight: '1.7',
+                        fontSize: '14px',
+                        fontFamily: 'monospace',
+                        backgroundColor: '#f8f9fa',
+                        padding: '24px',
+                        borderRadius: '8px',
+                        whiteSpace: 'pre-wrap'
+                    }}>
+                    {`# Deployment Guide: Next.js Frontend, Node.js Backend & MongoDB
+
+This document provides a **complete, step‑by‑step guide** to deploy an existing **Next.js frontend**, **Node.js backend**, and **MongoDB database**, including **local MongoDB setup** and **MongoDB Atlas cluster setup**. It also covers installation of required tools like **Node.js, PM2, Nginx**, and connecting frontend ↔ backend ↔ database.
+
+---
+
+## 1. Architecture Overview
+
+**Flow:**
+
+* User → Next.js Frontend
+* Frontend → Node.js Backend (REST / API)
+* Backend → MongoDB (Local or Atlas)
+
+**Tech Stack:**
+
+* Frontend: Next.js
+* Backend: Node.js (Express / Fastify)
+* Database: MongoDB (Local / Atlas)
+* Process Manager: PM2
+* Web Server / Reverse Proxy: Nginx
+* OS: Ubuntu 20.04 / 22.04
+
+---
+
+## 2. Prerequisites
+
+### Server Requirements
+
+* Ubuntu server
+* Minimum 2 GB RAM (recommended)
+* Public IP & domain (optional but recommended)
+
+### Local Machine Requirements
+
+* Git
+* Node.js
+* MongoDB (optional for local dev)
+
+---
+
+## 3. Install System Dependencies
+
+\`\`\`bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y curl git build-essential
+\`\`\`
+
+---
+
+## 4. Install Node.js (LTS)
+
+\`\`\`bash
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt install -y nodejs
+\`\`\`
+
+Verify:
+
+\`\`\`bash
+node -v
+npm -v
+\`\`\`
+
+---
+
+## 5. Install PM2 (Process Manager)
+
+\`\`\`bash
+sudo npm install -g pm2
+pm2 startup
+\`\`\`
+
+---
+
+## 6. Install Nginx
+
+\`\`\`bash
+sudo apt install -y nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+\`\`\`
+
+Check:
+
+\`\`\`bash
+http://<SERVER-IP>
+\`\`\`
+
+---
+
+## 7. Clone Existing Project from GitHub
+
+\`\`\`bash
+cd /var/www
+sudo git clone https://github.com/your-org/your-project.git
+sudo chown -R $USER:$USER your-project
+cd your-project
+\`\`\`
+
+**Recommended Structure:**
+
+\`\`\`
+your-project/
+ ├── frontend/   (Next.js)
+ └── backend/    (Node.js API)
+\`\`\`
+
+---
+
+## 8. Backend Setup (Node.js)
+
+### 8.1 Install Dependencies
+
+\`\`\`bash
+cd backend
+npm install
+\`\`\`
+
+### 8.2 Environment Variables
+
+Create \`.env\` file:
+
+\`\`\`env
+PORT=5000
+MONGO_URI=mongodb://localhost:27017/appdb
+JWT_SECRET=your_secret
+\`\`\`
+
+---
+
+## 9. MongoDB Setup (Option A: Local MongoDB)
+
+### 9.1 Install MongoDB
+
+\`\`\`bash
+sudo apt install -y mongodb
+sudo systemctl start mongodb
+sudo systemctl enable mongodb
+\`\`\`
+
+Verify:
+
+\`\`\`bash
+mongo
+\`\`\`
+
+### 9.2 Create Database
+
+\`\`\`bash
+use appdb
+db.createUser({ user: "appuser", pwd: "password", roles: ["readWrite"] })
+\`\`\`
+
+### 9.3 Update Backend Mongo URI
+
+\`\`\`env
+MONGO_URI=mongodb://appuser:password@localhost:27017/appdb
+\`\`\`
+
+---
+
+## 10. MongoDB Setup (Option B: MongoDB Atlas)
+
+### 10.1 Create Atlas Cluster
+
+1. Sign in to MongoDB Atlas
+2. Create a **Free M0 Cluster**
+3. Create DB user
+4. Whitelist server IP (or 0.0.0.0/0)
+
+### 10.2 Atlas Connection String
+
+\`\`\`env
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/appdb?retryWrites=true&w=majority
+\`\`\`
+
+---
+
+## 11. Start Backend with PM2
+
+\`\`\`bash
+pm2 start index.js --name backend-api
+pm2 save
+\`\`\`
+
+Check logs:
+
+\`\`\`bash
+pm2 logs backend-api
+\`\`\`
+
+---
+
+## 12. Frontend Setup (Next.js)
+
+### 12.1 Install Dependencies
+
+\`\`\`bash
+cd ../frontend
+npm install
+\`\`\`
+
+### 12.2 Environment Variables
+
+Create \`.env.local\`:
+
+\`\`\`env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+\`\`\`
+
+For production:
+
+\`\`\`env
+NEXT_PUBLIC_API_URL=https://api.yourdomain.com
+\`\`\`
+
+---
+
+## 13. Build & Run Next.js
+
+\`\`\`bash
+npm run build
+npm run start
+\`\`\`
+
+Or with PM2:
+
+\`\`\`bash
+pm2 start npm --name nextjs -- start
+pm2 save
+\`\`\`
+
+---
+
+## 14. Connect Frontend to Backend
+
+Example API call in Next.js:
+
+\`\`\`js
+fetch(\`\${process.env.NEXT_PUBLIC_API_URL}/api/users\`)
+  .then(res => res.json())
+  .then(data => console.log(data));
+\`\`\`
+
+---
+
+## 15. Nginx Reverse Proxy Configuration
+
+### 15.1 Backend Config
+
+\`\`\`bash
+sudo nano /etc/nginx/sites-available/backend
+\`\`\`
+
+\`\`\`nginx
+server {
+  listen 80;
+  server_name api.yourdomain.com;
+
+  location / {
+    proxy_pass http://localhost:5000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+  }
+}
+\`\`\`
+
+### 15.2 Frontend Config
+
+\`\`\`bash
+sudo nano /etc/nginx/sites-available/frontend
+\`\`\`
+
+\`\`\`nginx
+server {
+  listen 80;
+  server_name yourdomain.com;
+
+  location / {
+    proxy_pass http://localhost:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+  }
+}
+\`\`\`
+
+Enable configs:
+
+\`\`\`bash
+sudo ln -s /etc/nginx/sites-available/frontend /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/backend /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx
+\`\`\`
+
+---
+
+## 16. Enable Auto‑Restart on Reboot
+
+\`\`\`bash
+pm2 startup
+pm2 save
+\`\`\`
+
+---
+
+## 17. Optional: SSL with Certbot
+
+\`\`\`bash
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx
+\`\`\`
+
+---
+
+## 18. Deployment Checklist
+
+* Backend API running via PM2
+* Frontend Next.js running
+* MongoDB connected (Local / Atlas)
+* Environment variables set
+* Nginx reverse proxy configured
+* PM2 auto‑start enabled
+
+---
+
+## 19. Final Notes
+
+* Use \`.env\` files, never commit secrets
+* Use Atlas for production scalability
+* Enable monitoring & logging (PM2, Nginx logs)
+* Secure MongoDB with IP whitelisting
+
+---
+
+**End of Document**`}
+                </Flex>
+            </Flex>
+        </Flex>
+    );
+}

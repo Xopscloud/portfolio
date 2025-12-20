@@ -1,0 +1,160 @@
+---
+title: "Microservices Management with Kubernetes"
+publishedAt: "2025-12-20"
+summary: "Microservices architecture managed with Kubernetes, Helm, and CI/CD pipelines for scalable deployments."
+images:
+  - "/images/projects/Microservices Management with Kubernetes.jpg"
+technologies:
+  - "Kubernetes"
+  - "Helm"
+  - "Docker"
+  - "CI/CD"
+link: null
+team:
+  - name: "Johnson Thomas"
+    role: "DevOps Engineer"
+    avatar: "/images/avatar.jpg"
+---
+
+## Project Overview
+
+Managed microservices deployments using Kubernetes and Helm, with automated CI/CD for continuous delivery.
+
+## Technologies
+
+- Kubernetes
+- Helm
+- Docker
+- CI/CD
+
+## Highlights
+
+- Helm charts for repeatable deployments
+- Automated pipelines for build and deploy
+- Cluster management and cost optimisation
+---
+title: "Microservices Management with Kubernetes"
+publishedAt: "2024-11-20"
+summary: "Implemented comprehensive microservices architecture using Kubernetes clusters and Helm for multiple applications including payment systems and banking apps."
+images:
+  - "/images/projects/microservices/k8s-dashboard.jpg"
+team:
+  - name: "Johnson Thomas"
+    role: "DevOps Engineer"
+    avatar: "/images/avatar.jpg"
+---
+
+## Project Overview
+
+Designed and implemented a comprehensive microservices management platform using Kubernetes clusters and Helm charts for multiple enterprise applications including payment systems, banking applications, and construction management tools.
+
+## Applications Managed
+
+### Payment System
+- **Frontend**: Angular application
+- **Backend**: Python microservices
+- **Architecture**: Event-driven microservices
+- **Deployment**: Kubernetes with Helm
+
+### Banking Application
+- **Technology**: .NET Core microservices
+- **CI/CD**: Azure DevOps pipelines
+- **Database**: SQL Server with Redis caching
+- **Security**: OAuth 2.0 and JWT tokens
+
+### Construction Management App
+- **Frontend**: React.js
+- **Backend**: Java Spring Boot microservices
+- **Database**: PostgreSQL with MongoDB
+- **Messaging**: Apache Kafka
+
+### Laravel Application
+- **Framework**: Laravel PHP
+- **Databases**: MongoDB and Neo4j
+- **Caching**: Redis
+- **Search**: Elasticsearch
+
+## Kubernetes Implementation
+
+### Cluster Architecture
+```yaml
+# Kubernetes cluster configuration
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: microservices-prod
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payment-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: payment-service
+  template:
+    spec:
+      containers:
+      - name: payment-api
+        image: payment-service:latest
+        ports:
+        - containerPort: 8080
+```
+
+### Helm Charts Management
+- Standardized deployment templates
+- Environment-specific configurations
+- Automated rollback capabilities
+- Version management and releases
+
+## DevOps Pipeline
+
+### CI/CD Integration
+- **Jenkins**: Build and test automation
+- **GitHub Actions**: Code quality checks
+- **Azure DevOps**: .NET application pipelines
+- **GitLab CI**: Container image building
+
+### Monitoring & Observability
+- **Prometheus**: Metrics collection
+- **Grafana**: Visualization dashboards
+- **ELK Stack**: Centralized logging
+- **Jaeger**: Distributed tracing
+
+## Security Implementation
+
+### Container Security
+- **Trivy**: Vulnerability scanning
+- **SonarQube**: Code quality analysis
+- **RBAC**: Role-based access control
+- **Network Policies**: Pod-to-pod communication
+
+### Secrets Management
+- Kubernetes Secrets
+- External Secrets Operator
+- Vault integration
+- Encrypted storage
+
+## Results & Impact
+
+### Performance Improvements
+- **Deployment Time**: Reduced from 2 hours to 15 minutes
+- **Scalability**: Auto-scaling based on demand
+- **Reliability**: 99.95% uptime across all services
+- **Resource Optimization**: 40% reduction in infrastructure costs
+
+### Operational Benefits
+- Standardized deployment processes
+- Automated testing and quality gates
+- Comprehensive monitoring and alerting
+- Disaster recovery capabilities
+
+## Technologies Used
+
+- **Orchestration**: Kubernetes, Helm
+- **CI/CD**: Jenkins, GitHub Actions, Azure DevOps, GitLab CI
+- **Monitoring**: Prometheus, Grafana, ELK Stack
+- **Security**: Trivy, SonarQube, RBAC
+- **Languages**: Python, Java, .NET, PHP, JavaScript
+- **Databases**: PostgreSQL, MongoDB, Neo4j, Redis

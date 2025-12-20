@@ -1,0 +1,95 @@
+---
+title: "Banking Application"
+publishedAt: "2024-07-25"
+summary: ".NET application integrated with Azure DevOps pipelines, SonarQube for code quality, and automated packaging with comprehensive monitoring."
+images:
+  - "/images/projects/banking/azure-pipeline.jpg"
+team:
+  - name: "Johnson Thomas"
+    role: "DevOps Engineer"
+    avatar: "/images/avatar.jpg"
+---
+
+## Project Overview
+
+Developed and deployed a secure banking application using .NET Core with comprehensive DevOps automation, code quality analysis, and monitoring solutions integrated with Azure DevOps.
+
+## Application Architecture
+
+### Backend Services
+- **.NET Core**: RESTful API services
+- **Entity Framework**: Database ORM
+- **SQL Server**: Primary database
+- **Redis**: Caching layer
+- **SignalR**: Real-time notifications
+
+### Security Features
+- **Authentication**: Azure AD integration
+- **Authorization**: Role-based access control
+- **Encryption**: Data encryption at rest and in transit
+- **Compliance**: PCI DSS standards
+
+## DevOps Implementation
+
+### Azure DevOps Pipeline
+```yaml
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore packages'
+      inputs:
+        command: 'restore'
+    - task: DotNetCoreCLI@2
+      displayName: 'Build application'
+      inputs:
+        command: 'build'
+    - task: SonarQubePrepare@4
+      inputs:
+        SonarQube: 'SonarQube'
+        scannerMode: 'MSBuild'
+```
+
+### Code Quality & Security
+- **SonarQube**: Static code analysis
+- **Security Scanning**: Vulnerability assessment
+- **Unit Testing**: NUnit framework
+- **Code Coverage**: Minimum 80% coverage requirement
+
+### Monitoring & Observability
+- **Application Insights**: Performance monitoring
+- **Prometheus**: Custom metrics collection
+- **Grafana**: Dashboard visualization
+- **ELK Stack**: Centralized logging
+
+## Deployment Strategy
+
+### Containerization
+- Docker containers for microservices
+- Multi-stage builds for optimization
+- Azure Container Registry
+- Kubernetes deployment
+
+### Environment Management
+- Development, Staging, Production environments
+- Infrastructure as Code with ARM templates
+- Automated database migrations
+- Configuration management
+
+## Technologies Used
+
+- **.NET Core**: Backend framework
+- **Azure DevOps**: CI/CD platform
+- **SonarQube**: Code quality analysis
+- **Docker**: Containerization
+- **Kubernetes**: Orchestration
+- **Prometheus & Grafana**: Monitoring
+- **Azure**: Cloud platform

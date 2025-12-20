@@ -1,0 +1,181 @@
+---
+title: "Laravel Application with NoSQL"
+publishedAt: "2024-05-18"
+summary: "Containerized Laravel application with MongoDB and Neo4j databases, including automated backup/restore pipelines and monitoring solutions."
+images:
+  - "/images/projects/laravel/nosql-architecture.jpg"
+team:
+  - name: "Johnson Thomas"
+    role: "DevOps Engineer"
+    avatar: "/images/avatar.jpg"
+---
+
+## Project Overview
+
+Developed a scalable Laravel application utilizing NoSQL databases (MongoDB and Neo4j) with comprehensive containerization, automated backup strategies, and monitoring solutions using modern DevOps practices.
+
+## Application Architecture
+
+### Backend Framework
+- **Laravel 10**: PHP framework with modern features
+- **API Design**: RESTful APIs with Laravel Sanctum
+- **Queue System**: Redis-based job processing
+- **Caching**: Redis for application caching
+
+### Database Strategy
+- **MongoDB**: Document storage for user data and content
+- **Neo4j**: Graph database for relationship mapping
+- **Redis**: Session storage and caching
+- **Elasticsearch**: Full-text search capabilities
+
+## Infrastructure Setup
+
+### Containerization
+```dockerfile
+# Laravel Application Dockerfile
+FROM php:8.2-fpm
+
+RUN apt-get update && apt-get install -y \
+    git curl libpng-dev libonig-dev libxml2-dev zip unzip
+
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+COPY . /var/www
+
+RUN composer install --optimize-autoloader --no-dev
+```
+
+### Docker Compose Setup
+```yaml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+      - neo4j
+      - redis
+  
+  mongodb:
+    image: mongo:6.0
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb_data:/data/db
+  
+  neo4j:
+    image: neo4j:5.0
+    environment:
+      NEO4J_AUTH: neo4j/password
+    volumes:
+      - neo4j_data:/data
+```
+
+## DevOps Implementation
+
+### CI/CD Pipeline
+- **GitLab CI**: Automated testing and deployment
+- **Docker Registry**: Container image management
+- **Kubernetes**: Production deployment
+- **Helm Charts**: Application packaging
+
+### Backup & Recovery
+- **MongoDB**: Automated daily backups with mongodump
+- **Neo4j**: Graph database backup strategies
+- **S3 Storage**: Backup retention and archival
+- **Disaster Recovery**: Cross-region backup replication
+
+### Monitoring Solutions
+- **ELK Stack**: Centralized logging
+  - Elasticsearch for log storage
+  - Logstash for log processing
+  - Kibana for visualization
+- **Prometheus**: Application metrics
+- **Grafana**: Performance dashboards
+
+## Infrastructure as Code
+
+### Terraform Configuration
+```hcl
+resource "aws_ecs_cluster" "laravel_cluster" {
+  name = "laravel-app"
+  
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
+}
+
+resource "aws_ecs_service" "laravel_service" {
+  name            = "laravel-app"
+  cluster         = aws_ecs_cluster.laravel_cluster.id
+  task_definition = aws_ecs_task_definition.laravel_task.arn
+  desired_count   = 2
+}
+```
+
+### Kubernetes Deployment
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: laravel-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: laravel
+  template:
+    spec:
+      containers:
+      - name: laravel
+        image: laravel-app:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_CONNECTION
+          value: "mongodb"
+```
+
+## Key Features
+
+### Application Capabilities
+- **User Management**: MongoDB-based user profiles
+- **Relationship Mapping**: Neo4j for complex relationships
+- **Real-time Features**: WebSocket integration
+- **API Gateway**: Rate limiting and authentication
+
+### DevOps Automation
+- **Automated Testing**: PHPUnit and feature tests
+- **Code Quality**: PHP_CodeSniffer and PHPStan
+- **Security Scanning**: Composer audit and OWASP checks
+- **Performance Monitoring**: New Relic integration
+
+## Results & Impact
+
+### Performance Metrics
+- **Response Time**: Average 200ms API response
+- **Scalability**: Auto-scaling based on CPU/memory
+- **Availability**: 99.9% uptime achieved
+- **Data Integrity**: Zero data loss with backup strategies
+
+### Operational Benefits
+- **Deployment Time**: Reduced from 1 hour to 10 minutes
+- **Monitoring**: Comprehensive observability
+- **Cost Optimization**: 30% reduction in infrastructure costs
+- **Developer Productivity**: Streamlined development workflow
+
+## Technologies Used
+
+- **Framework**: Laravel, PHP 8.2
+- **Databases**: MongoDB, Neo4j, Redis, Elasticsearch
+- **Containerization**: Docker, Kubernetes
+- **Infrastructure**: Terraform, AWS/GCP
+- **Monitoring**: ELK Stack, Prometheus, Grafana
+- **CI/CD**: GitLab CI, Jenkins
