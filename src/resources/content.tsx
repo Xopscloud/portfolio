@@ -1,4 +1,4 @@
-import { About, Blog, Gallery, Home, Newsletter, Person, Social, Work } from "@/types";
+import { About, Blog, Home, Newsletter, Person, Social, Work } from "@/types";
 import { Line, Row, Text } from "@once-ui-system/core";
 
 const person: Person = {
@@ -143,7 +143,7 @@ const about: About = {
     experiences: [
       {
         company: "Nesa Software and Sinrorobotics",
-        timeframe: "May 2025 - Present",
+        timeframe: "May - Present",
         role: "DevOps Engineer",
         achievements: [
           <>
@@ -176,7 +176,7 @@ const about: About = {
       },
       {
         company: "Keyshell IT Solutions",
-        timeframe: "March 2023 - March 2025",
+        timeframe: "March - March",
         role: "DevOps Engineer",
         achievements: [
           <>
@@ -210,7 +210,7 @@ const about: About = {
       },
       {
         company: "Neocaps Solutions",
-        timeframe: "2022 - 2023",
+        timeframe: " - ",
         role: "System Administrator Support",
         achievements: [
           <>
@@ -240,7 +240,7 @@ const about: About = {
     institutions: [
       {
         name: "Keyshell Tech",
-        description: <>Linux administration & DevOps Engineering (March 2023 - March 2025). Comprehensive training in Linux system administration, containerization, CI/CD pipelines, cloud infrastructure, and DevOps best practices.</>,
+        description: <>Linux administration & DevOps Engineering (March - March). Comprehensive training in Linux system administration, containerization, CI/CD pipelines, cloud infrastructure, and DevOps best practices.</>,
       },
     ],
   },
@@ -454,57 +454,6 @@ const work: Work = {
   // All projects will be listed on the /home and /work routes
 };
 
-const gallery: Gallery = {
-  path: "/gallery",
-  label: "Gallery",
-  title: `Photo gallery – ${person.name}`,
-  description: `A photo collection by ${person.name}`,
-  // Images by https://lorant.one
-  // These are placeholder images, replace with your own
-  images: [
-    {
-      src: "/images/gallery/horizontal-1.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-4.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/horizontal-3.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-1.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/vertical-2.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-    {
-      src: "/images/gallery/horizontal-2.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/horizontal-4.jpg",
-      alt: "image",
-      orientation: "horizontal",
-    },
-    {
-      src: "/images/gallery/vertical-3.jpg",
-      alt: "image",
-      orientation: "vertical",
-    },
-  ],
-};
-
 const documents = {
   path: "/documents",
   label: "Documents",
@@ -512,4 +461,4 @@ const documents = {
   description: `Professional documents and certifications by ${person.name}`,
 };
 
-export { person, social, newsletter, home, about, blog, work, gallery, documents };
+export { person, social, newsletter, home, about, blog, work, documents };
