@@ -7,7 +7,6 @@ export {
   about,
   blog,
   work,
-  gallery,
   documents,
 } from "./content";
 
